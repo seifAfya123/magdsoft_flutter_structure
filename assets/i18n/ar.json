@@ -1,3 +1,12 @@
 {
-  
+    "login":"تسجيل الدخول",
+    "logout":"تسجيل الخروج",
+    "register":"انشاء حساب",
+    "arabic":"عربي",
+    "englsh":"انجليزي",
+    "enter_name":"ادخل الاسم",
+    "enter_mail":"ادخل الايميل",
+    "enter_password":"ادخل كلمه السر",
+    "enter_phone":"ادخل الموبيل",
+    "confirm_password":"تاكيد كلمه السر"
 }

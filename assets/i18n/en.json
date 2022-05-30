@@ -1,3 +1,12 @@
 {
-  
+    "login":"login",
+    "logout":"logout",
+    "register":"Register",
+    "arabic":"Arabic",
+    "englsh":"English",
+    "enter_name":"Enter name",
+    "enter_mail":"Enter email",
+    "enter_password":"Enter Password",
+    "enter_phone":"Enter phone numbr",
+    "confirm_password":"Confirm Password"
 }

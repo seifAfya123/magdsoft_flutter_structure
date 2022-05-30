@@ -9,21 +9,23 @@ import 'package:magdsoft_flutter_structure/business_logic/global_cubit/global_cu
 import 'package:magdsoft_flutter_structure/data/local/cache_helper.dart';
 import 'package:magdsoft_flutter_structure/data/remote/dio_helper.dart';
 import 'package:magdsoft_flutter_structure/presentation/router/app_router.dart';
+import 'package:magdsoft_flutter_structure/presentation/styles/colors.dart';
 import 'package:magdsoft_flutter_structure/presentation/widget/toast.dart';
 import 'package:sizer/sizer.dart';
 import 'package:intl/intl.dart';
-
+// import 'package:flutter_i18n/flutter_i18n.dart';
 
 late LocalizationDelegate delegate;
-
+bool islogedin = false;
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   BlocOverrides.runZoned(
-        () async {
+    () async {
       DioHelper.init();
       await CacheHelper.init();
       final locale =
           CacheHelper.getDataFromSharedPreference(key: 'language') ?? "ar";
+      islogedin = CacheHelper.getDataFromSharedPreference(key: 'logedin');
       delegate = await LocalizationDelegate.create(
         fallbackLocale: locale,
         supportedLocales: ['ar', 'en'],
@@ -92,12 +94,26 @@ class _MyAppState extends State<MyApp> {
                       GlobalWidgetsLocalizations.delegate,
                       delegate,
                     ],
+                    localeResolutionCallback: (locale, supportedLocales) {
+                      for (var supportedLocaleLanguage in supportedLocales) {
+                        if (supportedLocaleLanguage.languageCode ==
+                                locale!.languageCode &&
+                            supportedLocaleLanguage.countryCode ==
+                                locale.countryCode) {
+                          return supportedLocaleLanguage;
+                        }
+                      }
+
+                      // If device not support with locale to get language code then default get first on from the list
+                      return supportedLocales.first;
+                    },
                     locale: delegate.currentLocale,
                     supportedLocales: delegate.supportedLocales,
                     onGenerateRoute: widget.appRouter.onGenerateRoute,
+                    initialRoute: islogedin ? '/loged' : '/',
                     theme: ThemeData(
                       fontFamily: 'cairo',
-                      //scaffoldBackgroundColor: AppColors.white,
+                      scaffoldBackgroundColor: AppColor.blue,
                       appBarTheme: const AppBarTheme(
                         elevation: 0.0,
                         systemOverlayStyle: SystemUiOverlayStyle(
