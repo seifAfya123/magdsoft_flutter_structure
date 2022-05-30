@@ -7,6 +7,7 @@ import 'package:flutter_translate/flutter_translate.dart';
 import 'package:magdsoft_flutter_structure/business_logic/bloc_observer.dart';
 import 'package:magdsoft_flutter_structure/business_logic/global_cubit/global_cubit.dart';
 import 'package:magdsoft_flutter_structure/data/local/cache_helper.dart';
+import 'package:magdsoft_flutter_structure/data/models/my_repo.dart';
 import 'package:magdsoft_flutter_structure/data/remote/dio_helper.dart';
 import 'package:magdsoft_flutter_structure/presentation/router/app_router.dart';
 import 'package:magdsoft_flutter_structure/presentation/styles/colors.dart';
@@ -25,7 +26,8 @@ Future<void> main() async {
       await CacheHelper.init();
       final locale =
           CacheHelper.getDataFromSharedPreference(key: 'language') ?? "ar";
-      islogedin = CacheHelper.getDataFromSharedPreference(key: 'logedin');
+      islogedin =
+          CacheHelper.getDataFromSharedPreference(key: 'logedin') ?? false;
       delegate = await LocalizationDelegate.create(
         fallbackLocale: locale,
         supportedLocales: ['ar', 'en'],
