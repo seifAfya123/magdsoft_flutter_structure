@@ -25,9 +25,41 @@ class _RegisterScreenState extends State<RegisterScreen> {
   final phoneController = TextEditingController();
 
   final nameController = TextEditingController();
-
+  bool b1 = false;
   bool isvalid() {
-    return formKey.currentState?.validate() ?? false;
+    RegExp mailregex = RegExp(
+        r'^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$');
+    RegExp phoneregex = RegExp(r'^01[0125][0-9]{8}$');
+    if (nameController.text.isEmpty || nameController.text.length < 3) {
+      tosta.errorTosta("Enter valid name"); // name error
+      b1 = false;
+    } else {
+      if (emailController.text.isEmpty ||
+          !mailregex.hasMatch(emailController.text)) {
+        tosta.errorTosta("Enter valid email"); // email error
+        b1 = false;
+      } else {
+        if (!phoneregex.hasMatch(phoneController.text)) {
+          tosta.errorTosta("Enter valid Phone number"); // phone error
+          b1 = false;
+        } else {
+          if (passwordController.text.isEmpty ||
+              passwordController.text.length < 8) {
+            tosta.errorTosta(
+                "password cannot be empty or\nless than 8 characters"); // password error
+            b1 = false;
+          } else {
+            if (passwordController.text != confirmController.text) {
+              tosta.errorTosta(
+                  'passwords not the same'); // confirm password error
+            } else {
+              b1 = true;
+            }
+          }
+        }
+      }
+    }
+    return b1;
   }
 
   @override
@@ -43,7 +75,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
           // flex: 2,
           child: TwoOptionsRow(
             isInLoginScreen: false,
-            isValid: isvalid(),
+            fun: isvalid,
             name: nameController.text,
             email: emailController.text,
             phone: phoneController.text,
@@ -72,17 +104,6 @@ class _RegisterScreenState extends State<RegisterScreen> {
               controller: nameController,
               keyboardType: TextInputType.name,
               cursorColor: Colors.black,
-              validator: (val) {
-                RegExp regex = RegExp('');
-                if (val!.isEmpty) {
-                  return "name cannot be empty";
-                }
-                if (!regex.hasMatch(val)) {
-                  return "invalid name format";
-                } else {
-                  return null;
-                }
-              },
               decoration: InputDecoration(
                 border: OutlineInputBorder(
                   borderRadius: BorderRadius.circular(10.0),
@@ -100,15 +121,12 @@ class _RegisterScreenState extends State<RegisterScreen> {
               controller: emailController,
               hintText_: 'Enter mail',
               errorMessage: "invalid email format",
-              regExp: RegExp(
-                  r'^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$'),
             ),
             /////////////////////////////////// for phone number
             CustomeTextFeild(
               controller: phoneController,
               hintText_: 'Enter your phone number',
               errorMessage: "invalid phone number",
-              regExp: RegExp(r'^01[0125][0-9]{8}$'),
             ),
             /////////////////////////////////// for password
 
@@ -117,14 +135,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
               controller: passwordController,
               keyboardType: TextInputType.number,
               cursorColor: Colors.black,
-              validator: (val) {
-                if (val!.isEmpty) {
-                  return "password cannot be empty";
-                }
-                if (val.length < 8) {
-                  return "password cannot be less than 8 characters";
-                }
-              },
+              obscureText: !showPassword,
               decoration: InputDecoration(
                 border: OutlineInputBorder(
                   borderRadius: BorderRadius.circular(10.0),
@@ -145,7 +156,6 @@ class _RegisterScreenState extends State<RegisterScreen> {
                       ? const Icon(Icons.visibility_off)
                       : const Icon(Icons.visibility),
                 ),
-                helperMaxLines: 3,
                 helperStyle: const TextStyle(color: Colors.redAccent),
               ),
             ),
@@ -155,13 +165,6 @@ class _RegisterScreenState extends State<RegisterScreen> {
               controller: confirmController,
               keyboardType: TextInputType.number,
               cursorColor: Colors.black,
-              validator: (val) {
-                if (val!.isEmpty || confirmController.text != val) {
-                  return "passwords not the same ";
-                } else {
-                  return null;
-                }
-              },
               obscureText: !showPassword,
               decoration: InputDecoration(
                 border: OutlineInputBorder(

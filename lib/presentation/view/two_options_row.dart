@@ -17,8 +17,8 @@ import 'package:magdsoft_flutter_structure/presentation/widget/tosts.dart';
 
 class TwoOptionsRow extends StatelessWidget {
   bool isInLoginScreen;
-  bool isValid;
-  // VoidCallback fun;
+  late bool isValid;
+  Function fun;
   String? email;
   String? password;
   String? phone;
@@ -27,8 +27,8 @@ class TwoOptionsRow extends StatelessWidget {
   TwoOptionsRow({
     Key? key,
     required this.isInLoginScreen,
-    required this.isValid,
-    // required this.fun,
+    // required this.isValid,
+    required this.fun,
     this.email,
     this.password,
     this.phone,
@@ -38,6 +38,7 @@ class TwoOptionsRow extends StatelessWidget {
   Tosts tosta = Tosts();
   void gotoLoginScreen(BuildContext context) async {
     if (isInLoginScreen) {
+      isValid = fun();
       if (isValid) {
         var body = {
           'email': email!,
@@ -69,6 +70,7 @@ class TwoOptionsRow extends StatelessWidget {
     if (isInLoginScreen) {
       Navigator.pushReplacementNamed(context, RegisterScreen.routeName);
     } else {
+      isValid = fun();
       if (isValid) {
         var body = {
           'name': name!,

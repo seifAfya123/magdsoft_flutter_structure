@@ -19,7 +19,21 @@ class _LoginScreenState extends State<LoginScreen> {
   final passwordController = TextEditingController();
 
   bool isvalid() {
-    return formKey.currentState?.validate() ?? false;
+    RegExp regex = RegExp(
+        r'^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$');
+
+    if (emailController.text.isEmpty || !regex.hasMatch(emailController.text)) {
+      tosta.errorTosta("Enter valid email");
+    } else {
+      if (passwordController.text.isEmpty ||
+          passwordController.text.length < 8) {
+        tosta.errorTosta("password cannot be empty or\nless than 8 characters");
+        b1 = false;
+      } else {
+        b1 = true;
+      }
+    }
+    return b1;
   }
 
   //   void saveToken(String token) async {
@@ -38,83 +52,76 @@ class _LoginScreenState extends State<LoginScreen> {
           const Spacer(),
           Expanded(
             flex: 3,
-            child: Form(
-              key: formKey,
-              child: Padding(
-                // color: Colors.red,
-                padding: EdgeInsets.symmetric(
-                    horizontal: MediaQuery.of(context).size.width * 0.12),
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                  children: [
-                    TextFormField(
-                      onChanged: (value) {
-                        isvalid();
-                      },
-                      controller: emailController,
-                      keyboardType: TextInputType.emailAddress,
-                      cursorColor: Colors.black,
-                      textAlign: TextAlign.left,
-                      validator: (val) {
-                        RegExp regex = RegExp(
-                            r'^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$');
-                        if (val!.isEmpty || !regex.hasMatch(val)) {
-                          // return "Enter valid email";
-                          tosta.errorTosta("Enter valid email");
-                        } else {
-                          b1 = true;
-                          return null;
-                        }
-                      },
-                      decoration: InputDecoration(
-                        border: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(10.0),
-                        ),
-                        hintText: 'Enter your email',
-                        hintStyle: const TextStyle(
-                          color: AppColor.darkGrey,
-                        ),
-                        fillColor: AppColor.lightGrey,
-                        filled: true,
+            child: Padding(
+              padding: EdgeInsets.symmetric(
+                  horizontal: MediaQuery.of(context).size.width * 0.12),
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                children: [
+                  TextFormField(
+                    controller: emailController,
+                    keyboardType: TextInputType.emailAddress,
+                    cursorColor: Colors.black,
+                    textAlign: TextAlign.left,
+                    // validator: (val) {
+                    //   RegExp regex = RegExp(
+                    //       r'^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$');
+                    //   if (val!.isEmpty || !regex.hasMatch(val)) {
+                    //     // return "Enter valid email";
+                    //     tosta.errorTosta("Enter valid email");
+                    //   } else {
+                    //     b1 = true;
+                    //     return null;
+                    //   }
+                    // },
+                    decoration: InputDecoration(
+                      border: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(10.0),
+                      ),
+                      hintText: 'Enter your email',
+                      hintStyle: const TextStyle(
+                        color: AppColor.darkGrey,
+                      ),
+                      fillColor: AppColor.lightGrey,
+                      filled: true,
+                    ),
+                  ),
+                  TextFormField(
+                    controller: passwordController,
+                    keyboardType: TextInputType.emailAddress,
+                    cursorColor: Colors.black,
+                    // validator: (val) {
+                    //   if ((val!.isEmpty || val.length < 5) && b1) {
+                    //     tosta.errorTosta(
+                    //         "password cannot be empty or\nless than 8 characters");
+                    //   }
+                    // },
+                    obscureText: !showPassword,
+                    textAlign: TextAlign.left,
+                    decoration: InputDecoration(
+                      border: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(10.0),
+                      ),
+                      hintText: 'Enter your password',
+                      hintStyle: const TextStyle(
+                        color: AppColor.darkGrey,
+                      ),
+                      fillColor: AppColor.lightGrey,
+                      filled: true,
+                      helperStyle: const TextStyle(color: Colors.redAccent),
+                      prefixIcon: IconButton(
+                        onPressed: () {
+                          setState(() {
+                            showPassword = !showPassword;
+                          });
+                        },
+                        icon: showPassword
+                            ? const Icon(Icons.visibility_off)
+                            : const Icon(Icons.visibility),
                       ),
                     ),
-                    TextFormField(
-                      controller: passwordController,
-                      keyboardType: TextInputType.emailAddress,
-                      cursorColor: Colors.black,
-                      validator: (val) {
-                        if ((val!.isEmpty || val.length < 5) && b1) {
-                          tosta.errorTosta(
-                              "password cannot be empty or\nless than 8 characters");
-                        }
-                      },
-                      obscureText: !showPassword,
-                      textAlign: TextAlign.left,
-                      decoration: InputDecoration(
-                        border: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(10.0),
-                        ),
-                        hintText: 'Enter your password',
-                        hintStyle: const TextStyle(
-                          color: AppColor.darkGrey,
-                        ),
-                        fillColor: AppColor.lightGrey,
-                        filled: true,
-                        helperStyle: const TextStyle(color: Colors.redAccent),
-                        prefixIcon: IconButton(
-                          onPressed: () {
-                            setState(() {
-                              showPassword = !showPassword;
-                            });
-                          },
-                          icon: showPassword
-                              ? const Icon(Icons.visibility_off)
-                              : const Icon(Icons.visibility),
-                        ),
-                      ),
-                    ),
-                  ],
-                ),
+                  ),
+                ],
               ),
             ),
           ),
@@ -122,7 +129,7 @@ class _LoginScreenState extends State<LoginScreen> {
           Expanded(
             child: TwoOptionsRow(
               isInLoginScreen: true,
-              isValid: isvalid(),
+              fun: isvalid,
               email: emailController.text,
               password: passwordController.text,
             ),
