@@ -1,11 +1,7 @@
-import 'dart:convert';
-
 import 'package:flutter/material.dart';
-import 'package:magdsoft_flutter_structure/business_logic/global_cubit/global_cubit.dart';
 import 'package:magdsoft_flutter_structure/constants/end_points.dart';
 import 'package:magdsoft_flutter_structure/data/local/cache_helper.dart';
 import 'package:magdsoft_flutter_structure/data/models/account_model.dart';
-import 'package:magdsoft_flutter_structure/data/models/my_repo.dart';
 import 'package:magdsoft_flutter_structure/data/network/responses/login_response.dart';
 import 'package:magdsoft_flutter_structure/data/remote/dio_helper.dart';
 import 'package:magdsoft_flutter_structure/presentation/screens/user/home%20screen.dart';
@@ -34,9 +30,17 @@ class TwoOptionsRow extends StatelessWidget {
     this.phone,
     this.name,
   }) : super(key: key);
+  void unFocusKeyboard(BuildContext context) {
+    FocusScopeNode currentFocus = FocusScope.of(context);
+
+    if (!currentFocus.hasPrimaryFocus) {
+      currentFocus.unfocus();
+    }
+  }
 
   Tosts tosta = Tosts();
   void gotoLoginScreen(BuildContext context) async {
+    unFocusKeyboard(context);
     if (isInLoginScreen) {
       isValid = fun();
       if (isValid) {
@@ -67,6 +71,7 @@ class TwoOptionsRow extends StatelessWidget {
   }
 
   void gotoRegisterScreen(BuildContext context) async {
+    unFocusKeyboard(context);
     if (isInLoginScreen) {
       Navigator.pushReplacementNamed(context, RegisterScreen.routeName);
     } else {
@@ -98,16 +103,16 @@ class TwoOptionsRow extends StatelessWidget {
       mainAxisAlignment: MainAxisAlignment.spaceAround,
       children: [
         CustomeButton(
-          txt: "Login",
+          txt: "Register",
           function: () {
-            gotoLoginScreen(context);
+            gotoRegisterScreen(context);
           },
           btnColor: AppColor.blue,
         ),
         CustomeButton(
-          txt: "Register",
+          txt: "Login",
           function: () {
-            gotoRegisterScreen(context);
+            gotoLoginScreen(context);
           },
           btnColor: AppColor.blue,
         ),

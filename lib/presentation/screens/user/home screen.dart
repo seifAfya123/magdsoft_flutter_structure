@@ -25,6 +25,7 @@ class HomeScreen extends StatelessWidget {
         title: const Text("User Data"),
         centerTitle: true,
         backgroundColor: AppColor.blue,
+        automaticallyImplyLeading: false,
       ),
       body: Center(
         child: Column(

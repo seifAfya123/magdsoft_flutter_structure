@@ -65,24 +65,27 @@ class _RegisterScreenState extends State<RegisterScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      resizeToAvoidBottomInset: false,
-      body: HomeCard(columnChildern: [
-        Expanded(
-          flex: 4,
-          child: loginPart1(context),
-        ),
-        Expanded(
-          // flex: 2,
-          child: TwoOptionsRow(
-            isInLoginScreen: false,
-            fun: isvalid,
-            name: nameController.text,
-            email: emailController.text,
-            phone: phoneController.text,
-            password: passwordController.text,
+      // resizeToAvoidBottomInset: false,
+      body: HomeCard(
+        signinScreen: false,
+        columnChildern: [
+          Expanded(
+            flex: 4,
+            child: loginPart1(context),
           ),
-        ),
-      ]),
+          Expanded(
+            // flex: 2,
+            child: TwoOptionsRow(
+              isInLoginScreen: false,
+              fun: isvalid,
+              name: nameController.text,
+              email: emailController.text,
+              phone: phoneController.text,
+              password: passwordController.text,
+            ),
+          ),
+        ],
+      ),
     );
   }
 
@@ -129,11 +132,10 @@ class _RegisterScreenState extends State<RegisterScreen> {
               errorMessage: "invalid phone number",
             ),
             /////////////////////////////////// for password
-
             TextFormField(
               textAlign: TextAlign.left,
               controller: passwordController,
-              keyboardType: TextInputType.number,
+              keyboardType: TextInputType.name,
               cursorColor: Colors.black,
               obscureText: !showPassword,
               decoration: InputDecoration(
@@ -146,7 +148,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                 ),
                 fillColor: AppColor.lightGrey,
                 filled: true,
-                prefixIcon: IconButton(
+                suffixIcon: IconButton(
                   onPressed: () {
                     setState(() {
                       showPassword = !showPassword;
@@ -163,7 +165,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
             TextFormField(
               textAlign: TextAlign.left,
               controller: confirmController,
-              keyboardType: TextInputType.number,
+              keyboardType: TextInputType.name,
               cursorColor: Colors.black,
               obscureText: !showPassword,
               decoration: InputDecoration(
@@ -176,7 +178,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                 ),
                 fillColor: AppColor.lightGrey,
                 filled: true,
-                prefixIcon: IconButton(
+                suffixIcon: IconButton(
                   onPressed: () {
                     setState(() {
                       showPassword = !showPassword;
